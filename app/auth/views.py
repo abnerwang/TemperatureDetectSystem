@@ -1,45 +1,16 @@
-import functools
-from werkzeug.datastructures import MultiDict
-from flask import request, jsonify, g
 from datetime import datetime
+
+from flask import jsonify, g
 
 from . import auth
 from .forms import RegistrationForm
-from ..models import User
 from .. import db
-
-
-def validate_form(form_class):
-    """
-    处理表单验证的装饰器
-    :param form_class: 处理验证的表单类
-    :return: 验证结果
-    """
-
-    def decorator(view_func):
-        @functools.wraps(view_func)
-        def inner(*args, **kwargs):
-            if request.method == 'GET':
-                formdata = request.args
-            else:
-                if request.json:
-                    formdata = MultiDict(request.json)
-                else:
-                    formdata = request.form
-            form = form_class(formdata=formdata)
-            if not form.validate():
-                return jsonify(code=400, message=form.errors), 400
-
-            g.form = form
-            return view_func(*args, **kwargs)
-
-        return inner
-
-    return decorator
+from ..decorators import validate_form
+from ..models import User
 
 
 @auth.route('/register', methods=['GET', 'POST'])
-@validate_form(form_class=RegistrationForm)
+@validate_form(form_class=RegistrationForm)  # 处理表单验证的装饰器
 def register():
     form = g.form  # 运行到这里的时候，表单验证通过
 
