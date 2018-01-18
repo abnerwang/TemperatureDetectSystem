@@ -20,8 +20,10 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField("Confirm password",
                               validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
     user_desc = TextField("User description")
-
-    # 缺一个用户角色
+    flag = SelectField("Role", choices=[
+        ('0', '管理员'),
+        ('1', '普通用户')
+    ])
 
     def validate_username(self, field):
         """

@@ -15,7 +15,7 @@ class User(db.Model):
     user_desc = db.Column(db.Text)
     city = db.Column(db.String(64))
     address = db.Column(db.Text)
-    flag = db.Column(db.String)
+    flag = db.Column(db.String(10))
 
     @property
     def password(self):
