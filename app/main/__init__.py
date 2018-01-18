@@ -1,3 +1,3 @@
 from flask import Blueprint
 
-author = Blueprint('author', __name__)
+user = Blueprint('user', __name__)
