@@ -2,7 +2,7 @@
 
     欢迎使用安徽大学红外热像分析系统！为了确认您的账户，请务必在一小时内点击以下链接：
 
-    {{ url_for('auth.confirm', token=token, _external=True }}
+    {{ url_for('auth.confirm', token=token, _external=True) }}
 
     请尽快确认，一小时后此链接失效后您需要到客户端用户资料页重新发送确认邮件。
 

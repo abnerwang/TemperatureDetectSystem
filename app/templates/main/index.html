@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "bootstrap/base.html" %}
 
-</body>
-</html>
+{% block title %}账户确认{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ message }}</h1>
+        </div>
+    </div>
+{% endblock %}

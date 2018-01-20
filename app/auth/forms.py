@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, TextField
+from wtforms import StringField, PasswordField, SelectField, TextField, SubmitField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, Email, Regexp, EqualTo, Length
 
@@ -25,6 +25,7 @@ class RegistrationForm(FlaskForm):
         ('0', '管理员'),
         ('1', '普通用户')
     ])
+    submit = SubmitField('Regiser')
 
     def validate_username(self, field):
         """
@@ -43,3 +44,9 @@ class RegistrationForm(FlaskForm):
         """
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('该邮箱已经注册了')
+
+
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Log In')

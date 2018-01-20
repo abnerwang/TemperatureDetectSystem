@@ -1,3 +1,4 @@
+# coding=utf-8
 import os
 
 
@@ -6,6 +7,18 @@ class Config:
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    MAIL_SERVER = 'smtp.163.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    SYS_MAIL_SUBJECT_PREFIX = '[红外热像分析系统]'
+    SYS_MAIL_SENDER = 'Admin <ahu_confirm@163.com>'
+
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelopmentConfig(Config):

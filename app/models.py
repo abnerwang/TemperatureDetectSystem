@@ -1,9 +1,12 @@
+from flask import current_app
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
-from . import db
+from . import db, login_manager
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(64), nullable=False, unique=True, index=True)
@@ -16,6 +19,7 @@ class User(db.Model):
     city = db.Column(db.String(64))
     address = db.Column(db.Text)
     flag = db.Column(db.String(10))
+    confirmed = db.Column(db.Boolean, default=False)
 
     @property
     def password(self):
@@ -27,6 +31,42 @@ class User(db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        """
+        加载用户的回调函数
+        :user_id: Unicode 字符串形式表示的用户标志符
+        :return: 能找到用户则返回用户对象，否则返回 None
+        """
+        return User.query.get(int(user_id))
+
+    def generate_confirmation_token(self, expiration=3600):
+        """
+        根据用户 id 生成确认邮件用的确认令牌
+        :param expiration: 该令牌的有效时间，以秒为单位
+        :return: 返回生成的确认令牌
+        """
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm': self.id})
+
+    def confirm(self, token):
+        """
+        电子邮件确认用户账户
+        :param token: 确认账户用的令牌
+        :return: 用户确认是否成功
+        """
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        if data.get('confirm') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        db.session.commit()
+        return True
 
 
 class NoCoImage(db.Model):
