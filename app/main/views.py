@@ -5,4 +5,4 @@ from . import main
 
 @main.route('/index/<message>')
 def index(message):
-    render_template('main/index.html', message=message)
+    return render_template('main/index.html', message=message)

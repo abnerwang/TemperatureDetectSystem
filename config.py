@@ -1,4 +1,3 @@
-# coding=utf-8
 import os
 
 
@@ -14,7 +13,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     SYS_MAIL_SUBJECT_PREFIX = '[红外热像分析系统]'
-    SYS_MAIL_SENDER = 'Admin <ahu_confirm@163.com>'
+    SYS_MAIL_SENDER = 'Administrator <ahu_confirm@163.com>'
 
     @staticmethod
     def init_app(app):

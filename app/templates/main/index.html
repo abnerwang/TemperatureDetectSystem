@@ -2,12 +2,29 @@
 
 {% block title %}账户确认{% endblock %}
 
-{% block navbar %}{% endblock %}
+{% block navbar %}
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="page-header">
-            <h1>{{ message }}</h1>
+            <h2>{{ message }}</h2>
         </div>
     </div>
 {% endblock %}

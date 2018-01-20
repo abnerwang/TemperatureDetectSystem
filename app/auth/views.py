@@ -53,10 +53,11 @@ def confirm(token):
         return jsonify(code=400, message='参数不正确')
     id = data.get('confirm')
     user = User.query.filter_by(id=id).first()
-    if user.confirmed:
-        return redirect(url_for('main.index', message='您的账户已经确认过了！'))
-    if user.confirm(token):
-        return redirect(url_for('main.index', message='谢谢！您已成功激活账户！'))
+    if user is not None:
+        if user.confirmed:
+            return redirect(url_for('main.index', message='您的账户已经确认过了！'))
+        if user.confirm(token):
+            return redirect(url_for('main.index', message='谢谢！您已成功激活账户！'))
     else:
         return redirect(url_for('main.index', message='链接无效或过期，请到客户端用户资料页重新发送！'))
     return redirect(url_for('main.index', message='您的账户已经确认过了！'))
