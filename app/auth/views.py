@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from flask import jsonify, g, current_app, redirect, url_for
+from flask import jsonify, g, current_app, redirect, url_for, render_template
 from flask_login import login_user, logout_user, login_required
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from . import auth
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm
 from .. import db
 from ..decorators import validate_form
 from ..email import send_email
@@ -46,21 +46,22 @@ def register():
 # 处理电子邮件确认请求
 @auth.route('/confirm/<token>')
 def confirm(token):
+    title = '账户确认'
     s = Serializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(token)
     except:
-        return jsonify(code=400, message='参数不正确')
+        return redirect(url_for('main.index', title=title, message='参数不正确'))
     id = data.get('confirm')
     user = User.query.filter_by(id=id).first()
     if user is not None:
         if user.confirmed:
-            return redirect(url_for('main.index', message='您的账户已经确认过了！'))
+            return redirect(url_for('main.index', title=title, message='您的账户已经确认过了！'))
         if user.confirm(token):
-            return redirect(url_for('main.index', message='谢谢！您已成功激活账户！'))
+            return redirect(url_for('main.index', title=title, message='谢谢！您已成功激活账户！'))
     else:
-        return redirect(url_for('main.index', message='链接无效或过期，请到客户端用户资料页重新发送！'))
-    return redirect(url_for('main.index', message='您的账户已经确认过了！'))
+        return redirect(url_for('main.index', title=title, message='链接无效或过期，请到客户端用户资料页重新发送！'))
+    return redirect(url_for('main.index', title=title, message='您的账户已经确认过了！'))
 
 
 # 处理登录
@@ -95,3 +96,39 @@ def login():
 def logout():
     logout_user()
     return jsonify(code=200, message='成功退出系统！')
+
+
+# 发送电子邮件修改密码
+@auth.route('/resPwdViaEmail', methods=['GET', 'POST'])
+@validate_form(form_class=EmailForResPwd)
+def res_pwd_via_email():
+    form = g.form
+    email = form.email.data
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify(code=400, message='该邮件尚未注册此系统！请重新输入！')
+
+    token = user.generate_res_pwd_token()
+    send_email(email, '重设密码', 'auth/email/reset_password', user=user, token=token)
+
+    return jsonify(code=200, message='系统已向您发送一封邮件用于重设密码，一小时内有效！')
+
+
+# 重设密码的路由
+@auth.route('/resPwdViaEmail/<token>', methods=['GET', 'POST'])
+def password_reset(token):
+    form = PasswordResetViaEmailForm()
+    if form.validate_on_submit():
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return redirect(url_for('main.index', title=title, message='参数不正确'))
+        id = data.get('reset')
+        user = User.query.filter_by(id=id).first()
+        title = '重设密码'
+        if user.reset_password(token=token, new_password=form.password.data):
+            return redirect(url_for('main.index', title=title, message='重设密码成功！您现在可以用新密码登录系统了！'))
+        else:
+            return redirect(url_for('main.index', title=title, message='您的链接无效或过期！请到客户端重新发送重设密码邮件！'))
+    return render_template('auth/reset_password.html', form=form)

@@ -1,7 +1,7 @@
 from flask import current_app
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db, login_manager
 
@@ -64,6 +64,34 @@ class User(UserMixin, db.Model):
         if data.get('confirm') != self.id:
             return False
         self.confirmed = True
+        db.session.add(self)
+        db.session.commit()
+        return True
+
+    def generate_res_pwd_token(self, expiration=3600):
+        """
+        生成根据邮箱重设密码用到的 token
+        :param expiration: token 的有效时间为一个小时，即 3600 秒
+        :return: token
+        """
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id})
+
+    def reset_password(self, token, new_password):
+        """
+        根据电子邮件重设账户密码
+        :param token: 用到的验证 token
+        :param new_password: 新的密码
+        :return: 重设密码是否成功
+        """
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('reset') != self.id:
+            return False
+        self.password = new_password
         db.session.add(self)
         db.session.commit()
         return True
