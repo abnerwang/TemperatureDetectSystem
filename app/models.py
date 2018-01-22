@@ -96,6 +96,17 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
+    def reset_password(self, new_password):
+        """
+        在用户资料页修改密码
+        :param new_password: 新的密码
+        :return: 密码是否成功修改
+        """
+        self.password = new_password
+        db.session.add(self)
+        db.session.commit()
+        return True
+
 
 class NoCoImage(db.Model):
     __tablename__ = 'no_co_images'

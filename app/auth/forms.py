@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, TextField, SubmitField
+from wtforms import StringField, PasswordField, SelectField, TextAreaField, SubmitField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, Email, Regexp, EqualTo
 
@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired(), EqualTo('password2', message='两次输入的密码不一致')])
     password2 = PasswordField("Confirm password",
                               validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
-    user_desc = TextField("User description")
+    user_desc = TextAreaField("User description")
     flag = SelectField("Role", choices=[
         ('0', '管理员'),
         ('1', '普通用户')
@@ -70,3 +70,25 @@ class PasswordResetViaEmailForm(FlaskForm):
     password = PasswordField('新密码', validators=[DataRequired(), EqualTo('password2', message='两次输入的密码不一致')])
     password2 = PasswordField('确认新密码', validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
     submit = SubmitField('提交')
+
+
+class UserInfoForm(FlaskForm):
+    """
+    修改当前登录用户信息的表单
+    """
+    telephone = StringField("Telephone")
+    email = StringField("Email")
+    city = StringField("City")
+    address = StringField("Address")
+    submit = SubmitField('确认修改')
+
+
+class ChangePasswordForm(FlaskForm):
+    """
+    修改当前登录用户密码的表单
+    """
+    old_password = PasswordField('旧密码')
+    password = PasswordField("Password", validators=[DataRequired(), EqualTo('password2', message='两次输入的密码不一致')])
+    password2 = PasswordField("Confirm password",
+                              validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
+    submit = SubmitField('确认修改')
