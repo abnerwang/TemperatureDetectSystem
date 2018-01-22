@@ -1,11 +1,11 @@
 from datetime import datetime
 
 from flask import jsonify, g, current_app, redirect, url_for, render_template
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from . import auth
-from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm
+from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm, UserInfoForm, ChangePasswordForm
 from .. import db
 from ..decorators import validate_form
 from ..email import send_email
@@ -39,7 +39,8 @@ def register():
     send_email(user.email, '确认你的账户', 'auth/email/confirm', user=user, token=token)
 
     if User.query.filter_by(username=username).first():
-        return jsonify(code=201, message='注册成功！系统已发送一封邮件到您的邮箱，为了让您忘记密码时能通过邮箱找回密码，请在一小时内前往确认！'), 201
+        return jsonify(code=201, message='注册成功！系统已发送一封邮件到您的邮箱，为了让您忘记密码时能通过邮箱找回密码，'
+                                         '请在一小时内前往确认！'), 201
     return jsonify(code=500, message='服务器出现内部错误！'), 500
 
 
@@ -85,17 +86,17 @@ def login():
         db.session.commit()
 
         return jsonify(code=200, message='登录成功！上次登录时间为：' + str(last_login_time), username=user.username,
-                       confirm_status=user.confirmed)
+                       confirm_status=user.confirmed), 200
     else:
-        return jsonify(code=401, message='用户名或密码错误！')
+        return jsonify(code=401, message='用户名或密码错误！'), 401
 
 
 # 处理登出
-@auth.route('/logout')
+@auth.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
-    return jsonify(code=200, message='成功退出系统！')
+    return jsonify(code=200, message='成功退出系统！'), 200
 
 
 # 发送电子邮件修改密码
@@ -106,12 +107,12 @@ def res_pwd_via_email():
     email = form.email.data
     user = User.query.filter_by(email=email).first()
     if user is None:
-        return jsonify(code=400, message='该邮件尚未注册此系统！请重新输入！')
+        return jsonify(code=400, message='该邮件尚未注册此系统！请重新输入！'), 400
 
     token = user.generate_res_pwd_token()
     send_email(email, '重设密码', 'auth/email/reset_password', user=user, token=token)
 
-    return jsonify(code=200, message='系统已向您发送一封邮件用于重设密码，一小时内有效！')
+    return jsonify(code=200, message='系统已向您发送一封邮件用于重设密码，一小时内有效！'), 200
 
 
 # 重设密码的路由
@@ -132,3 +133,71 @@ def password_reset(token):
         else:
             return redirect(url_for('main.index', title=title, message='您的链接无效或过期！请到客户端重新发送重设密码邮件！'))
     return render_template('auth/reset_password.html', form=form)
+
+# 返回当前登录用户的基本信息
+@auth.route('/currentUserInfo')
+@login_required   # 用户必须先登录
+def return_user_info():
+    user = current_user
+    telephone = user.telephone
+    email = user.email
+    city = user.city
+    address = user.address
+
+    return jsonify(code=200, telephone=telephone, email=email, city=city, address=address), 200
+
+# 修改当前登录用户的基本信息
+@auth.route('/changeInfo', methods=['GET', 'POST'])
+@login_required   # 用户必须先登录
+@validate_form(form_class=UserInfoForm)
+def change_user_info():
+    flag = False     # 用户是否修改了邮箱
+    form = g.form
+    user = current_user
+    if form.telephone.data is not None:
+        user.telephone = form.telephone.data
+    if form.email.data is not None:
+        if form.email.data != user.email:
+            user.confirmed = False
+            flag = True
+        user.email = form.email.data
+    if form.city.data is not None:
+        user.city = form.city.data
+    if form.address.data is not None:
+        user.address = form.address.data
+
+    db.session.add(user)
+    db.session.commit()
+
+    if flag:
+        # 发送电子邮件确认信息
+        token = user.generate_confirmation_token()
+        send_email(user.email, '确认你的账户', 'auth/email/confirm', user=user, token=token)
+        return jsonify(code=200, message='成功修改信息，系统检测到您修改了邮箱，已自动向新的邮箱发送了账户认证消息，'
+                                         '为了您的账户安全，请一小时内前往认证！'), 200
+
+    return jsonify(code=200, message='信息已成功修改!'), 200
+
+# 向用户邮箱重新发送认证消息
+@auth.route('/reConfirm', methods=['GET', 'POST'])
+@login_required   # 要求用户先登录
+def send_recon_info():
+    user = current_user
+    token = user.generate_confirmation_token()
+    send_email(user.email, '确认你的账户', 'auth/email/confirm', user=user, token=token)
+    return jsonify(code=200, message='确认邮件已发送成功，请一小时内前往确认，过期无效！'), 200
+
+
+# 修改当前登录用户的密码
+@auth.route('/changePassword', methods=['GET', 'POST'])
+@login_required   # 要求用户先登录
+@validate_form(form_class=ChangePasswordForm)
+def change_password():
+    user = current_user
+    form = g.form
+
+    if not user.verify_password(form.old_password.data):
+        return jsonify(code=400, message='您输入的旧密码不正确!'), 400
+
+    if user.reset_password(new_password=form.password.data):
+        return jsonify(code=200, message='密码修改成功！'), 200
