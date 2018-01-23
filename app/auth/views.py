@@ -86,7 +86,7 @@ def login():
         db.session.commit()
 
         return jsonify(code=200, message='登录成功！上次登录时间为：' + str(last_login_time), username=user.username,
-                       confirm_status=user.confirmed), 200
+                       confirm_status=user.confirmed, flag=user.flag), 200
     else:
         return jsonify(code=401, message='用户名或密码错误！'), 401
 
@@ -128,14 +128,14 @@ def password_reset(token):
         id = data.get('reset')
         user = User.query.filter_by(id=id).first()
         title = '重设密码'
-        if user.reset_password(token=token, new_password=form.password.data):
+        if user.reset_password_token(token=token, new_password=form.password.data):
             return redirect(url_for('main.index', title=title, message='重设密码成功！您现在可以用新密码登录系统了！'))
         else:
             return redirect(url_for('main.index', title=title, message='您的链接无效或过期！请到客户端重新发送重设密码邮件！'))
     return render_template('auth/reset_password.html', form=form)
 
 # 返回当前登录用户的基本信息
-@auth.route('/currentUserInfo')
+@auth.route('/currentUserInfo', methods=['GET', 'POST'])
 @login_required   # 用户必须先登录
 def return_user_info():
     user = current_user
@@ -154,16 +154,16 @@ def change_user_info():
     flag = False     # 用户是否修改了邮箱
     form = g.form
     user = current_user
-    if form.telephone.data is not None:
+    if form.telephone.data != '':
         user.telephone = form.telephone.data
-    if form.email.data is not None:
+    if form.email.data != '':
         if form.email.data != user.email:
             user.confirmed = False
             flag = True
         user.email = form.email.data
-    if form.city.data is not None:
+    if form.city.data != '':
         user.city = form.city.data
-    if form.address.data is not None:
+    if form.address.data != '':
         user.address = form.address.data
 
     db.session.add(user)

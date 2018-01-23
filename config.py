@@ -15,7 +15,7 @@ class Config:
     SYS_MAIL_SUBJECT_PREFIX = '[红外热像分析系统]'
     SYS_MAIL_SENDER = 'Administrator <ahu_confirm@163.com>'
 
-    UPLOADED_NOCOIMAGES_DEST = 'D://no_co_images'
+    UPLOADED_NOCOIMAGES_DEST = '/Users/abnerwang/no_co_images'
 
     @staticmethod
     def init_app(app):

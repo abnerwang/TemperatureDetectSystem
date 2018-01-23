@@ -77,7 +77,7 @@ class User(UserMixin, db.Model):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'reset': self.id})
 
-    def reset_password(self, token, new_password):
+    def reset_password_token(self, token, new_password):
         """
         根据电子邮件重设账户密码
         :param token: 用到的验证 token
@@ -112,7 +112,7 @@ class NoCoImage(db.Model):
     __tablename__ = 'no_co_images'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     image_name = db.Column(db.String(64), nullable=False)
-    image_num = db.Column(db.String(64), unique=True, nullable=False)
+    image_num = db.Column(db.String(64))
     power_company_province = db.Column(db.String(64))
     power_company_cityorcountry = db.Column(db.String(64))
     suborlineorzone_name = db.Column(db.String(64))

@@ -17,17 +17,7 @@ def upload_no_co_image():
     form = UploadNoCoImageForm()
 
     if form.validate_on_submit():
-        filename = form.no_co_image.data.filename
-
-        # 使用当前登录用户的用户名+时间戳的 MD5 值选择适当长度作为文件名
-        name = hashlib.md5((current_user.username + str(time.time())).encode('utf-8')).hexdigest()[:15]
-        ext = filename.split('.')[1]
-
-        # 检测图像编号是否存在
-        if NoCoImage.query.filter_by(image_num=form.image_num.data) is not None:
-            return jsonify(code=409, message='图像编号已存在！请重新输入！')
-
-        filename = no_co_images.save(form.no_co_image.data, name=name + '.')
+        filename = no_co_images.save(form.no_co_image.data)
 
         image_name = filename
         image_num = form.image_num.data
