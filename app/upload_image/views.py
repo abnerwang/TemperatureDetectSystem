@@ -1,8 +1,5 @@
-import hashlib
-import time
-
 from flask import jsonify
-from flask_login import login_required, current_user
+from flask_login import login_required
 
 from . import upload_image
 from .forms import UploadNoCoImageForm
@@ -77,9 +74,9 @@ def upload_no_co_image():
         db.session.add(no_co_image)
         db.session.commit()
 
-        if NoCoImage.query.filter_by(image_num=image_num).first() and original_image_path is not None:
-            return jsonify(code=201, message='图片上传成功！')
+        if NoCoImage.query.filter_by(image_name=image_name).first() and original_image_path is not None:
+            return jsonify(code=201, message='图片上传成功！'), 201
         else:
-            return jsonify(code=400, message='参数错误，图片上传失败！')
+            return jsonify(code=400, message='参数错误，图片上传失败！'), 200
     else:
-        return jsonify(code=400, message=form.errors)
+        return jsonify(code=400, message=form.errors), 200
