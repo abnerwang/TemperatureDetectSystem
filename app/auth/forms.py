@@ -10,9 +10,7 @@ class RegistrationForm(FlaskForm):
     """
     用户注册表单
     """
-    username = StringField("Username", validators=[DataRequired(), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-                                                                          '用户名必须是字母、数字、'
-                                                                          '点号或下划线的组合')])
+    username = StringField("Username", validators=[DataRequired()])
     telephone = StringField("Telephone", validators=[Regexp('1[34578][0-9]{9}', message='手机号码格式不正确')])
     city = StringField("City")
     address = StringField("Address")
