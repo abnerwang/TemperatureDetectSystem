@@ -21,7 +21,7 @@ manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 # HTTPS 暂不实现
 # manager.add_command('runserver', Server('localhost', port=443, ssl_crt="app/cert.pem", ssl_key="app/key.pem"))
-manager.add_command('runserver', Server('localhost', port=8080))
+manager.add_command('runserver', Server('0.0.0.0', port=8080))
 
 if __name__ == '__main__':
     manager.run()
