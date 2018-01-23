@@ -23,7 +23,7 @@ def validate_form(form_class):
                     formdata = request.form
             form = form_class(formdata=formdata)
             if not form.validate():
-                return jsonify(code=400, message=form.errors), 400
+                return jsonify(code=200, message=form.errors), 200
 
             g.form = form
             return view_func(*args, **kwargs)

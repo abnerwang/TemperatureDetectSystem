@@ -88,7 +88,7 @@ def login():
         return jsonify(code=200, message='登录成功！上次登录时间为：' + str(last_login_time), username=user.username,
                        confirm_status=user.confirmed, flag=user.flag), 200
     else:
-        return jsonify(code=401, message='用户名或密码错误！'), 401
+        return jsonify(code=200, message='用户名或密码错误！'), 200
 
 
 # 处理登出
@@ -107,7 +107,7 @@ def res_pwd_via_email():
     email = form.email.data
     user = User.query.filter_by(email=email).first()
     if user is None:
-        return jsonify(code=400, message='该邮件尚未注册此系统！请重新输入！'), 400
+        return jsonify(code=200, message='该邮件尚未注册此系统！请重新输入！'), 200
 
     token = user.generate_res_pwd_token()
     send_email(email, '重设密码', 'auth/email/reset_password', user=user, token=token)
@@ -118,6 +118,7 @@ def res_pwd_via_email():
 # 重设密码的路由
 @auth.route('/resPwdViaEmail/<token>', methods=['GET', 'POST'])
 def password_reset(token):
+    title = '重设密码'
     form = PasswordResetViaEmailForm()
     if form.validate_on_submit():
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -197,7 +198,7 @@ def change_password():
     form = g.form
 
     if not user.verify_password(form.old_password.data):
-        return jsonify(code=400, message='您输入的旧密码不正确!'), 400
+        return jsonify(code=200, message='您输入的旧密码不正确!'), 200
 
     if user.reset_password(new_password=form.password.data):
         return jsonify(code=200, message='密码修改成功！'), 200
