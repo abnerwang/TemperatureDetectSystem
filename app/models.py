@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     user_desc = db.Column(db.Text)
     city = db.Column(db.String(64))
     address = db.Column(db.Text)
-    flag = db.Column(db.String(10),default='1')
+    flag = db.Column(db.String(10), default='1')
     confirmed = db.Column(db.Boolean, default=False)
 
     @property
@@ -228,7 +228,6 @@ class CoImage(db.Model):
     re_tm5 = db.Column(db.Float)
     rtd = db.Column(db.Float)
     td = db.Column(db.Float)
-
 
 # class BigRectInfo(db.Model):
 #     co_image_table_ID = db.Column(db.Integer)

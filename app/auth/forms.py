@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, TextAreaField, SubmitField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms import ValidationError
 from wtforms.validators import DataRequired, Email, Regexp, EqualTo
 
@@ -19,10 +19,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField("Confirm password",
                               validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
     user_desc = TextAreaField("User description")
-    flag = SelectField("Role", choices=[
-        ('0', '管理员'),
-        ('1', '普通用户')
-    ])
+    flag = StringField('User Role')
     submit = SubmitField('Regiser')
 
     def validate_username(self, field):

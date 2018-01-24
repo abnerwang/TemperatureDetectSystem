@@ -18,7 +18,7 @@ ccd_images = UploadSet('CCDImages', IMAGES)
 matrix_temp = UploadSet('MatrixTemp', TEXT)
 
 login_manager = LoginManager()
-login_manager.session_protection = 'strong'  # 防止用户会话遭篡改
+login_manager.session_protection = None  # 防止用户会话遭篡改
 login_manager.login_view = 'auth.login'  # 设置登录端点
 
 
