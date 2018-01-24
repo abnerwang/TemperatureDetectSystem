@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     user_desc = db.Column(db.Text)
     city = db.Column(db.String(64))
     address = db.Column(db.Text)
-    flag = db.Column(db.String(10))
+    flag = db.Column(db.String(10),default='1')
     confirmed = db.Column(db.Boolean, default=False)
 
     @property
@@ -165,7 +165,7 @@ class CoImage(db.Model):
     clean_image_path = db.Column(db.Text)
     diagnose_image_path = db.Column(db.Text)
     ccd_image_path = db.Column(db.Text)
-    matrix_path = db.Column(db.Text)
+    matrix_temp_path = db.Column(db.Text)
     production_date = db.Column(db.Date)
     run_date = db.Column(db.Date)
     detection_date = db.Column(db.Date)

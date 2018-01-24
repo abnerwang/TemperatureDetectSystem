@@ -4,7 +4,7 @@ from flask_login import login_required
 from . import upload_image
 from .forms import UploadNoCoImageForm, UploadCoImageForm
 from .. import db
-from .. import no_co_images, co_images
+from .. import no_co_images, co_images, clean_images, ccd_images, matrix_temp, original_images
 from ..models import NoCoImage, CoImage
 
 
@@ -96,16 +96,24 @@ def upload_co_image():
     form = UploadCoImageForm()
 
     if form.validate_on_submit():
-        filename = co_images.save(form.co_image.data)
+        original_image_name = original_images.save(form.original_image.data)
+        clean_image_name = clean_images.save(form.clean_image.data)
+        diagnosed_image_name = co_images.save(form.co_image.data)
+        ccd_image_name = ccd_images.save(form.ccd_image.data)
+        matrix_filename = matrix_temp.save(form.matrix_file.data)
 
-        image_name = filename
+        image_name = diagnosed_image_name
         image_num = form.image_num.data
         power_company_province = form.power_company_province.data
         power_company_cityorcountry = form.power_company_cityorcountry.data
         suborlineorzone_name = form.suborlineorzone_name.data
         location_detail = form.location_detail.data
         location_nature = form.location_nature.data
-        diagnose_image_path = co_images.path(filename)
+        original_image_path = original_images.path(original_image_name)
+        clean_image_path = clean_images.path(clean_image_name)
+        diagnose_image_path = co_images.path(diagnosed_image_name)
+        ccd_image_path = ccd_images.path(ccd_image_name)
+        matrix_temp_path = matrix_temp.path(matrix_filename)
         production_date = form.production_date.data
         run_date = form.run_date.data
         detection_date = form.detection_date.data
@@ -174,7 +182,10 @@ def upload_co_image():
                            power_company_cityorcountry=power_company_cityorcountry,
                            suborlineorzone_name=suborlineorzone_name,
                            location_detail=location_detail, location_nature=location_nature,
-                           diagnose_image_path=diagnose_image_path,
+                           original_image_path=original_image_path,
+                           clean_image_path=clean_image_path,
+                           diagnose_image_path=diagnose_image_path, ccd_image_path=ccd_image_path,
+                           matrix_temp_path=matrix_temp_path,
                            production_date=production_date, run_date=run_date, detection_date=detection_date,
                            detection_time=detection_time, report_date=report_date,
                            instrument_model=instrument_model,

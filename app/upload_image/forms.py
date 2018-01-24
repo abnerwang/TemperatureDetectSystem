@@ -4,7 +4,7 @@ from wtforms import StringField, TextAreaField, DateField, FloatField
 from wtforms.validators import DataRequired
 from wtforms_components import TimeField
 
-from .. import no_co_images
+from .. import no_co_images, co_images, original_images, clean_images, ccd_images, matrix_temp
 
 
 class UploadNoCoImageForm(FlaskForm):
@@ -51,7 +51,12 @@ class UploadCoImageForm(FlaskForm):
     """
     上传诊断后图片的表单
     """
-    co_image = FileField('诊断的图片', validators=[FileAllowed(no_co_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+
+    original_image = FileField('原图', validators=[FileAllowed(original_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    clean_image = FileField('净图', validators=[FileAllowed(clean_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    co_image = FileField('诊断后图', validators=[FileAllowed(co_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    ccd_image = FileField('可见光图', validators=[FileAllowed(ccd_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    matrix_file = FileField('温度矩阵', validators=[FileAllowed(matrix_temp, '只能上传 txt 文件！'), FileRequired('尚未选取文件！')])
     image_num = StringField('图像编号', validators=[DataRequired()])
     power_company_province = StringField('省级供电公司')
     power_company_cityorcountry = StringField('市县级供电公司')
