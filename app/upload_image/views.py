@@ -1,5 +1,4 @@
 from flask import jsonify
-from flask_login import login_required
 
 from . import upload_image
 from .forms import UploadNoCoImageForm, UploadCoImageForm
@@ -9,7 +8,6 @@ from ..models import NoCoImage, CoImage
 
 
 @upload_image.route('/no_co_image', methods=['GET', 'POST'])
-@login_required
 def upload_no_co_image():
     """
     上传图片到未诊断库
@@ -87,7 +85,6 @@ def upload_no_co_image():
 
 
 @upload_image.route('/co_image', methods=['GET', 'POST'])
-@login_required
 def upload_co_image():
     """
     上传图片到已诊断库
