@@ -199,7 +199,7 @@ class CoImage(db.Model):
     trouble_rank = db.Column(db.String(20))
     diagnose_analyse = db.Column(db.Text)
     processing_way = db.Column(db.Text)
-    rrg_temp = db.Column(db.Float)
+    rrg_tem = db.Column(db.Float)
     hot_mode = db.Column(db.String(20))
     r1_name = db.Column(db.String(50))
     r2_name = db.Column(db.String(50))
@@ -230,9 +230,9 @@ class CoImage(db.Model):
     td = db.Column(db.Float)
 
 
-class BigRectInfo(db.Model):
-    co_image_table_ID = db.Column(db.Integer)
-    start_point_x = db.Column(db.Float)
-    start_point_y = db.Column(db.Float)
-    end_point_x = db.Column(db.Float)
-    end_point_y = db.Column(db.Float)
+# class BigRectInfo(db.Model):
+#     co_image_table_ID = db.Column(db.Integer)
+#     start_point_x = db.Column(db.Float)
+#     start_point_y = db.Column(db.Float)
+#     end_point_x = db.Column(db.Float)
+#     end_point_y = db.Column(db.Float)

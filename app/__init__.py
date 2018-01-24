@@ -3,7 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
-from flask_uploads import UploadSet, configure_uploads, IMAGES
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 
 from config import config
 
@@ -11,6 +11,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 mail = Mail()
 no_co_images = UploadSet('NoCoImages', IMAGES)
+co_images = UploadSet('CoImages', IMAGES)
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'  # 防止用户会话遭篡改
@@ -26,6 +27,7 @@ def create_app(config_name):
     login_manager.init_app(app)
 
     configure_uploads(app, no_co_images)
+    configure_uploads(app, co_images)
 
     # 注册 main 蓝本（用于邮件发送的账户确认）
     from .main import main as main_blueprint
