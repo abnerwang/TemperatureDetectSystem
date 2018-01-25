@@ -47,6 +47,7 @@ class UploadNoCoImageForm(FlaskForm):
     test_unit = StringField('实验单位')
     test_nature = StringField('检测性质')
 
+
 class UploadCoImageForm(FlaskForm):
     """
     上传诊断后图片的表单
@@ -55,7 +56,7 @@ class UploadCoImageForm(FlaskForm):
     original_image = FileField('原图', validators=[FileAllowed(original_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
     clean_image = FileField('净图', validators=[FileAllowed(clean_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
     co_image = FileField('诊断后图', validators=[FileAllowed(co_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
-    ccd_image = FileField('可见光图', validators=[FileAllowed(ccd_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    ccd_image = FileField('可见光图', validators=[FileAllowed(ccd_images, '只能上传图片！')])
     matrix_file = FileField('温度矩阵', validators=[FileAllowed(matrix_temp, '只能上传 txt 文件！'), FileRequired('尚未选取文件！')])
     image_num = StringField('图像编号', validators=[DataRequired()])
     power_company_province = StringField('省级供电公司')

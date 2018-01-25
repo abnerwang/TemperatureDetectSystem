@@ -1,5 +1,6 @@
 from . import download_image
 from .forms import QueryForm
+from ..models import CoImage
 
 
 @download_image.route('/report_query_image', methods=['GET', 'POST'])
@@ -13,3 +14,5 @@ def report_query_image():
     device_type = form.device_type.data
     start_time = form.start_time.data
     end_time = form.end_time.data
+
+

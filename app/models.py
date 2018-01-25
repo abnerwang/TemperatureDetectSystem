@@ -43,7 +43,7 @@ class User(UserMixin, db.Model):
 
     @login_manager.request_loader
     def load_user_from_request(request):
-        username = request.args.get('username')
+        username = request.form.get('username')
 
         return User.query.filter_by(username=username).first()
 

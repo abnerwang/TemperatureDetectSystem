@@ -5,8 +5,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from . import auth
-from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm, UserInfoForm, \
-    ChangePasswordForm
+from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm, UserInfoForm, ChangePasswordForm
 from .. import db
 from ..decorators import validate_form
 from ..email import send_email
@@ -156,10 +155,9 @@ def return_user_info():
 # 修改当前登录用户的基本信息
 @auth.route('/changeInfo', methods=['GET', 'POST'])
 @login_required  # 用户必须先登录
-@validate_form(form_class=UserInfoForm)
 def change_user_info():
     flag = False  # 用户是否修改了邮箱
-    form = g.form
+    form = UserInfoForm()
     user = current_user
     if form.telephone.data != '':
         user.telephone = form.telephone.data
@@ -199,10 +197,9 @@ def send_recon_info():
 # 修改当前登录用户的密码
 @auth.route('/changePassword', methods=['GET', 'POST'])
 @login_required  # 要求用户先登录
-@validate_form(form_class=ChangePasswordForm)
 def change_password():
     user = current_user
-    form = g.form
+    form = ChangePasswordForm()
 
     if not user.verify_password(form.old_password.data):
         return jsonify(code=200, message='您输入的旧密码不正确!'), 200
