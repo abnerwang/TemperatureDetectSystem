@@ -9,5 +9,5 @@ class QueryForm(FlaskForm):
     suborlineorzone_name = StringField('名称')
     defect_type = StringField('有无故障')
     device_type = StringField('设备类型')
-    start_time = DateField('起始时间')
-    end_time = DateField('终止时间')
+    start_date = DateField('起始时间')
+    end_date = DateField('终止时间')
