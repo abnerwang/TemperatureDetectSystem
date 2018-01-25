@@ -41,6 +41,12 @@ class User(UserMixin, db.Model):
         """
         return User.query.get(int(user_id))
 
+    @login_manager.request_loader
+    def load_user_from_request(request):
+        username = request.args.get('username')
+
+        return User.query.filter_by(username=username).first()
+
     def generate_confirmation_token(self, expiration=3600):
         """
         根据用户 id 生成确认邮件用的确认令牌
