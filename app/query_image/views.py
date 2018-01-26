@@ -63,7 +63,7 @@ def query_co_image_info():
     return jsonify(code=200, data=images_info), 200
 
 
-@query_image.route('/report_via_id')
+@query_image.route('/report_via_id', methods=['GET', 'POST'])
 def report_via_id():
     form = IDForm()
     id = form.ID.data
