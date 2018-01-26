@@ -20,32 +20,32 @@ def query_co_image_info():
     if location_nature == '所有地点':
         co_image1 = CoImage.query
     else:
-        co_image1 = CoImage.query.filter_by(location_nature=location_nature)
+        co_image1 = CoImage.query.filter(CoImage.location_nature == location_nature)
 
     if defect_type == '所有类型':
         co_image2 = co_image1
     else:
-        co_image2 = co_image1.filter_by(defect_type=defect_type)
+        co_image2 = co_image1.filter(CoImage.defect_type == defect_type)
 
     if device_type == '所有类型':
         co_image3 = co_image2
     else:
-        co_image3 = co_image2.filter_by(device_type=device_type)
+        co_image3 = co_image2.filter(CoImage.device_type == device_type)
 
     if power_company_province == '':
         co_image4 = co_image3
     else:
-        co_image4 = co_image3.filter_by(power_company_province=power_company_province)
+        co_image4 = co_image3.filter(CoImage.power_company_province == power_company_province)
 
     if power_company_cityorcounty == '':
         co_image5 = co_image4
     else:
-        co_image5 = co_image4.filter_by(power_company_cityorcounty=power_company_cityorcounty)
+        co_image5 = co_image4.filter(CoImage.power_company_cityorcounty == power_company_cityorcounty)
 
     if suborlineorzone_name == '':
         co_image6 = co_image5
     else:
-        co_image6 = co_image5.filter_by(suborlineorzone_name=suborlineorzone_name)
+        co_image6 = co_image5.filter(CoImage.suborlineorzone_name == suborlineorzone_name)
 
     images = co_image6.filter(CoImage.detection_date.between(start_date, end_date)).all()
 
