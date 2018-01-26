@@ -74,7 +74,7 @@ def report_via_id():
     image_num = image.image_num
     power_company_province = image.power_company_province
     power_company_cityorcountry = image.power_company_cityorcountry
-    suborlineorzone_name = image.suborlineorzone
+    suborlineorzone_name = image.suborlineorzone_name
     location_detail = image.location_detail
     location_nature = image.location_nature
     production_date = image.production_date
