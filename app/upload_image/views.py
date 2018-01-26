@@ -182,7 +182,8 @@ def upload_co_image():
 
         image = CoImage.query.filter_by(detection_date=detection_date, power_company_province=power_company_province,
                                         power_company_cityorcountry=power_company_cityorcountry,
-                                        suborlineorzone_name=suborlineorzone_name, location_detail=location_detail)
+                                        suborlineorzone_name=suborlineorzone_name,
+                                        location_detail=location_detail).first()
 
         if image is not None:
             return jsonify(code=200, message='此条信息已存在，请到重新诊断中进行修改！'), 200
