@@ -1,8 +1,22 @@
+import datetime
+import json
+from json import dumps
+
 from flask import jsonify, send_from_directory, current_app
 
 from . import query_image
 from .forms import QueryForm, IDForm
 from ..models import CoImage
+
+
+class CJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.date):
+            return obj.strftime('%Y-%m-%d')
+        elif isinstance(obj, datetime.time):
+            return obj.strftime("%H:%M:%S")
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 
 @query_image.route('/co_image_info', methods=['GET', 'POST'])
@@ -79,8 +93,8 @@ def report_via_id():
     location_nature = image.location_nature
     production_date = image.production_date
     run_date = image.run_date
-    detection_date = image.detection_date
-    detection_time = image.detection_time
+    detection_date = dumps(image.detection_date, cls=CJsonEncoder)
+    detection_time = dumps(image.detection_time, cls=CJsonEncoder)
     report_date = image.report_date
     instrument_model = image.instrument_model
     instrument_num = image.instrument_num
