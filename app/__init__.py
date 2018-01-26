@@ -49,4 +49,8 @@ def create_app(config_name):
     from .upload_image import upload_image as upload_image_blueprint
     app.register_blueprint(upload_image_blueprint, url_prefix='/upload')
 
+    # 注册图片查询蓝本
+    from .query_image import query_image as query_image_blueprint
+    app.register_blueprint(query_image_blueprint, url_prefix='/query')
+
     return app

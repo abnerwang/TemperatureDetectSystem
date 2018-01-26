@@ -96,7 +96,10 @@ def upload_co_image():
         original_image_name = original_images.save(form.original_image.data)
         clean_image_name = clean_images.save(form.clean_image.data)
         diagnosed_image_name = co_images.save(form.co_image.data)
-        ccd_image_name = ccd_images.save(form.ccd_image.data)
+        if form.ccd_image.data is None:
+            ccd_image_name = ''
+        else:
+            ccd_image_name = ccd_images.save(form.ccd_image.data)
         matrix_filename = matrix_temp.save(form.matrix_file.data)
 
         image_name = diagnosed_image_name
@@ -109,7 +112,10 @@ def upload_co_image():
         original_image_path = original_images.path(original_image_name)
         clean_image_path = clean_images.path(clean_image_name)
         diagnose_image_path = co_images.path(diagnosed_image_name)
-        ccd_image_path = ccd_images.path(ccd_image_name)
+        if ccd_image_name == '':
+            ccd_image_path = ''
+        else:
+            ccd_image_path = ccd_images.path(ccd_image_name)
         matrix_temp_path = matrix_temp.path(matrix_filename)
         production_date = form.production_date.data
         run_date = form.run_date.data
@@ -173,6 +179,13 @@ def upload_co_image():
         re_tm5 = form.re_tm5.data
         rtd = form.rtd.data
         td = form.td.data
+
+        image = CoImage.query.filter_by(detection_date=detection_date, power_company_province=power_company_province,
+                                        power_company_cityorcountry=power_company_cityorcountry,
+                                        suborlineorzone_name=suborlineorzone_name, location_detail=location_detail)
+
+        if image is not None:
+            return jsonify(code=200, message='此条信息已存在，请到重新诊断中进行修改！'), 200
 
         co_image = CoImage(image_name=image_name, image_num=image_num,
                            power_company_province=power_company_province,

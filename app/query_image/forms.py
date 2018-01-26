@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DateField
+from wtforms import StringField, DateField, IntegerField
 
 
 class QueryForm(FlaskForm):
@@ -11,3 +11,7 @@ class QueryForm(FlaskForm):
     device_type = StringField('设备类型')
     start_date = DateField('起始时间')
     end_date = DateField('终止时间')
+
+
+class IDForm(FlaskForm):
+    ID = IntegerField('图像ID')
