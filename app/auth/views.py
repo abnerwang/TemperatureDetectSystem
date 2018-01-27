@@ -5,7 +5,8 @@ from flask_login import login_user, logout_user, login_required, current_user
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 from . import auth
-from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm, UserInfoForm, ChangePasswordForm
+from .forms import RegistrationForm, LoginForm, EmailForResPwd, PasswordResetViaEmailForm, UserInfoForm, \
+    ChangePasswordForm, GetUserInfo, ChangeUserPwd
 from .. import db
 from ..decorators import validate_form
 from ..email import send_email
@@ -206,3 +207,38 @@ def change_password():
 
     if user.reset_password(new_password=form.password.data):
         return jsonify(code=200, message='密码修改成功！'), 200
+
+
+@auth.route('/getUserInfo', methods=['GET', 'POST'])
+@validate_form(GetUserInfo)
+def get_user_info():
+    form = g.form
+    username = form.username.data
+    user = User.query.filter_by(username=username).first()
+
+    if user is None:
+        return jsonify(code=200, message='您所查找的用户不存在，请重新输入！')
+
+    telephone = user.telephone
+    email = user.email
+    city = user.city
+    address = user.address
+
+    return jsonify(code=200, telephone=telephone, email=email, city=city, address=address)
+
+
+@auth.route('/changePwdViaAdmin', methods=['GET', 'POST'])
+@validate_form(ChangeUserPwd)
+def change_pwd_via_admin():
+    form = g.form
+    username = form.username.data
+    user = User.query.filter_by(username=username).first()
+
+    if user is None:
+        return jsonify(code=200, message='用户不存在，请重新输入！')
+
+    password = form.password.data
+
+    user.reset_password(password)
+
+    return jsonify(code=200, message='您的密码已更改！')

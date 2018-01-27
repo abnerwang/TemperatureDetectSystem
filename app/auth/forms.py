@@ -87,3 +87,21 @@ class ChangePasswordForm(FlaskForm):
     password2 = PasswordField("Confirm password",
                               validators=[DataRequired(), EqualTo('password', message='两次输入的密码不一致')])
     submit = SubmitField('确认修改')
+
+
+class GetUserInfo(FlaskForm):
+    """
+    管理员用户根据用户名获取用户信息所填表单
+    """
+    username = StringField('输入用户名', validators=[DataRequired()])
+    submit = SubmitField('提交')
+
+
+class ChangeUserPwd(FlaskForm):
+    """
+    管理员用户更改用户密码
+    """
+    username = StringField('输入用户名', validators=[DataRequired()])
+    password = PasswordField('输入新密码', validators=[EqualTo('password2', message='两次输入的密码不一致！')])
+    password2 = PasswordField('确认新密码', validators=[EqualTo('password', message='两次输入的密码不一致！')])
+    submit = SubmitField('确认修改')
