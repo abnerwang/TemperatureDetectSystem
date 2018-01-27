@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 
 from . import upload_image
 from .forms import UploadNoCoImageForm, UploadCoImageForm
@@ -180,13 +180,13 @@ def upload_co_image():
         rtd = form.rtd.data
         td = form.td.data
 
-        image = CoImage.query.filter_by(detection_date=detection_date, power_company_province=power_company_province,
-                                        power_company_cityorcountry=power_company_cityorcountry,
-                                        suborlineorzone_name=suborlineorzone_name,
-                                        location_detail=location_detail).first()
+        # image = CoImage.query.filter_by(detection_date=detection_date, power_company_province=power_company_province,
+        #                                power_company_cityorcountry=power_company_cityorcountry,
+        #                                suborlineorzone_name=suborlineorzone_name,
+        #                                location_detail=location_detail).first()
 
-        if image is not None:
-            return jsonify(code=200, message='此条信息已存在，请到重新诊断中进行修改！'), 200
+        # if image is not None:
+        #    return jsonify(code=200, message='此条信息已存在，请到重新诊断中进行修改！'), 200
 
         co_image = CoImage(image_name=image_name, image_num=image_num,
                            power_company_province=power_company_province,
@@ -209,6 +209,7 @@ def upload_co_image():
                            RH=RH, device_name=device_name, device_type=device_type,
                            interval_name=interval_name,
                            test_unit=test_unit, test_nature=test_nature, defect_part=defect_part,
+                           defect_type=defect_type,
                            trouble_rank=trouble_rank,
                            diagnose_analyse=diagnose_analyse, processing_way=processing_way, rrg_tem=rrg_tem,
                            hot_mode=hot_mode,
@@ -230,3 +231,11 @@ def upload_co_image():
             return jsonify(code=400, message='参数错误，图片上传失败！'), 200
     else:
         return jsonify(code=400, message=form.errors), 200
+
+
+@upload_image.route('/multipleCoImages', methods=['GET', 'POST'])
+def upload_multiple_co_images():
+    for filename in request.files.getlist('image'):
+        no_co_images.save(filename)
+
+    return jsonify(code=200, message='图片上传成功！')
