@@ -17,6 +17,11 @@ def upload_no_co_image():
 
     if form.validate_on_submit():
         filename = no_co_images.save(form.no_co_image.data)
+        if form.ccd_image.data is None:
+            ccd_image_name = ''
+        else:
+            ccd_image_name = ccd_images.save(form.ccd_image.data)
+        matrix_filename = matrix_temp.save(form.matrix_file.data)
 
         image_name = filename
         image_num = form.image_num.data
@@ -26,6 +31,11 @@ def upload_no_co_image():
         location_detail = form.location_detail.data
         location_nature = form.location_nature.data
         original_image_path = no_co_images.path(filename)
+        if ccd_image_name == '':
+            ccd_image_path = ''
+        else:
+            ccd_image_path = ccd_images.path(ccd_image_name)
+        matrix_temp_path = matrix_temp.path(matrix_filename)
         production_date = form.production_date.data
         run_date = form.run_date.data
         detection_date = form.detection_date.data
@@ -60,7 +70,8 @@ def upload_no_co_image():
                                 power_company_cityorcountry=power_company_cityorcountry,
                                 suborlineorzone_name=suborlineorzone_name,
                                 location_detail=location_detail, location_nature=location_nature,
-                                original_image_path=original_image_path,
+                                original_image_path=original_image_path, ccd_image_path=ccd_image_path,
+                                matrix_path=matrix_temp_path,
                                 production_date=production_date, run_date=run_date, detection_date=detection_date,
                                 detection_time=detection_time, report_date=report_date,
                                 instrument_model=instrument_model,
@@ -233,8 +244,8 @@ def upload_co_image():
         return jsonify(code=400, message=form.errors), 200
 
 
-@upload_image.route('/multipleCoImages', methods=['GET', 'POST'])
-def upload_multiple_co_images():
+@upload_image.route('/multipleNoCoImages', methods=['GET', 'POST'])
+def upload_multiple_no_co_images():
     for filename in request.files.getlist('image'):
         no_co_images.save(filename)
 

@@ -12,6 +12,9 @@ class UploadNoCoImageForm(FlaskForm):
     上传未诊断图片的表单
     """
     no_co_image = FileField('未诊断图片', validators=[FileAllowed(no_co_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    ccd_image = FileField('可见光图', validators=[FileAllowed(ccd_images, '只能上传图片！')])
+    matrix_file = FileField('温度矩阵', validators=[FileAllowed(matrix_temp, '只能上传 txt 文件！')])
+
     image_num = StringField('图像编号', validators=[DataRequired()])
     power_company_province = StringField('省级供电公司')
     power_company_cityorcountry = StringField('市县级供电公司')
