@@ -37,18 +37,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-                              'mysql://root:wxp12345@localhost/temp_detect_dev'
+                              'mysql://abnerwang:wxp12345@localhost/temp_detect_dev'
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI') or \
-                              'mysql://root:wxp12345@localhost/temp_detect_test'
+                              'mysql://abnerwang:wxp12345@localhost/temp_detect_test'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI') or \
-                              'mysql://root:wxp12345@localhost/temp_detect'
+                              'mysql://abnerwang:wxp12345@localhost/temp_detect'
 
 
 config = {
