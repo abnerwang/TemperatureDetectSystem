@@ -53,4 +53,8 @@ def create_app(config_name):
     from .query_image import query_image as query_image_blueprint
     app.register_blueprint(query_image_blueprint, url_prefix='/query')
 
+    # 注册信息修改蓝本
+    from .change_info import change_info as change_info_blueprint
+    app.register_blueprint(change_info_blueprint, url_prefix='/change_info')
+
     return app

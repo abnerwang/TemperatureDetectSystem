@@ -1,21 +1,8 @@
-import datetime
-import json
-
 from flask import jsonify, send_from_directory, current_app
 
 from . import query_image
 from .forms import QueryForm, IDForm
 from ..models import CoImage, NoCoImage
-
-
-class CJsonEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime.date):
-            return obj.strftime('%Y-%m-%d')
-        elif isinstance(obj, datetime.time):
-            return obj.strftime("%H:%M:%S")
-        else:
-            return json.JSONEncoder.default(self, obj)
 
 
 @query_image.route('/co_image_info', methods=['GET', 'POST'])
@@ -291,3 +278,65 @@ def export_no_co_image_matrix():
     matrix_temp_name = matrix_temp_path.split('/')[-1]
     return send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
                                as_attachment=True), 200
+
+
+@query_image.route('/no_co_image_info_via_id', methods=['GET', 'POST'])
+def no_co_image_info_via_id():
+    form = IDForm()
+    id = form.ID.data
+
+    image = NoCoImage.query.filter_by(id=id).first()
+
+    image_name = image.image_name
+    image_num = image.image_num
+    power_company_province = image.power_company_province
+    power_company_cityorcountry = image.power_company_cityorcountry
+    suborlineorzone_name = image.suborlineorzone_name
+    location_detail = image.location_detail
+    location_nature = image.location_nature
+    production_date = image.production_date
+    run_date = image.run_date
+    detection_date = image.detection_date.strftime('%Y-%m-%d')
+    detection_time = image.detection_time.strftime('%H:%M:%S')
+    report_date = image.report_date
+    instrument_model = image.instrument_model
+    instrument_num = image.instrument_num
+    reporter = image.reporter
+    principal = image.steward
+    inspector = image.inspector
+    reviewer = image.reviewer
+    auditor = image.auditor
+    rated_current = image.rated_current
+    load_current = image.load_current
+    voltage_level = image.voltage_level
+    weather = image.weather
+    E = image.emissivity
+    wind_speed = image.wind_speed
+    DST = image.test_distance
+    im_h_tm = image.max_temp
+    im_l_tm = image.min_temp
+    TATM = image.env_temp
+    RH = image.env_humi
+    device_name = image.device_name
+    device_type = image.device_type
+    interval_name = image.interval_name
+    test_unit = image.test_unit
+    test_nature = image.test_nature
+
+    return jsonify(code=200, image_name=image_name, image_num=image_num,
+                   power_company_province=power_company_province,
+                   power_company_cityorcounty=power_company_cityorcountry,
+                   suborlineorzone_name=suborlineorzone_name,
+                   location_detail=location_detail, location_nature=location_nature,
+                   production_date=production_date,
+                   run_date=run_date, detection_date=detection_date, detection_time=detection_time,
+                   report_date=report_date,
+                   instrument_model=instrument_model, instrument_num=instrument_num, reporter=reporter,
+                   principal=principal,
+                   inspector=inspector, reviewer=reviewer, auditor=auditor, rated_current=rated_current,
+                   load_current=load_current,
+                   voltage_level=voltage_level, weather=weather, E=E, wind_speed=wind_speed, DST=DST,
+                   im_h_tm=im_h_tm,
+                   im_l_tm=im_l_tm, TATM=TATM, RH=RH, device_name=device_name, device_type=device_type,
+                   interval_name=interval_name,
+                   test_unit=test_unit, test_nature=test_nature), 200
