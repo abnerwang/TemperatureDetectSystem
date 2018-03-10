@@ -213,6 +213,18 @@ def export_co_image_matrix():
                                as_attachment=True), 200
 
 
+@query_image.route('/export_no_co_image_via_id', methods=['GET', 'POST'])
+def export_no_co_image_via_id():
+    form = IDForm()
+    id = form.ID.data
+
+    image = NoCoImage.query.filter_by(id=id).first()
+    image_name = image.image_name
+
+    return send_from_directory(current_app.config['UPLOADED_NOCOIMAGES_DEST'], image_name,
+                               as_attachment=True), 200
+
+
 @query_image.route('/no_co_image_info', methods=['GET', 'POST'])
 def query_no_co_image_info():
     form = QueryForm()
