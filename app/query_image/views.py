@@ -1,12 +1,11 @@
 import datetime
 import json
-from json import dumps
 
 from flask import jsonify, send_from_directory, current_app
 
 from . import query_image
 from .forms import QueryForm, IDForm
-from ..models import CoImage
+from ..models import CoImage, NoCoImage
 
 
 class CJsonEncoder(json.JSONEncoder):
@@ -93,8 +92,10 @@ def report_via_id():
     location_nature = image.location_nature
     production_date = image.production_date
     run_date = image.run_date
-    detection_date = dumps(image.detection_date, cls=CJsonEncoder)
-    detection_time = dumps(image.detection_time, cls=CJsonEncoder)
+    # detection_date = json.dumps(image.detection_date, cls=CJsonEncoder)
+    # detection_time = json.dumps(image.detection_time, cls=CJsonEncoder)
+    detection_date = image.detection_date.strftime('%Y-%m-%d')
+    detection_time = image.detection_time.strftime('%H:%M:%S')
     report_date = image.report_date
     instrument_model = image.instrument_model
     instrument_num = image.instrument_num
@@ -211,3 +212,82 @@ def export_ccd_image_via_id():
                                    as_attachment=True), 200
     else:
         return jsonify(code=200, message='您尚未上传此图像相关的可见光图像！'), 200
+
+
+@query_image.route('/export_co_image_matrix', methods=['GET', 'POST'])
+def export_co_image_matrix():
+    form = IDForm()
+    id = form.ID.data
+
+    image = CoImage.query.filter_by(id=id).first()
+    matrix_temp_path = image.matrix_temp_path
+    matrix_temp_name = matrix_temp_path.split('/')[-1]
+    return send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
+                               as_attachment=True), 200
+
+
+@query_image.route('/no_co_image_info', methods=['GET', 'POST'])
+def query_no_co_image_info():
+    form = QueryForm()
+    location_nature = form.location_nature.data
+    power_company_province = form.power_company_province.data
+    power_company_cityorcounty = form.power_company_cityorcounty.data
+    suborlineorzone_name = form.suborlineorzone_name.data
+    defect_type = form.defect_type.data
+    device_type = form.device_type.data
+    start_date = form.start_date.data
+    end_date = form.end_date.data
+
+    if location_nature == '所有地点':
+        no_co_image1 = NoCoImage.query
+    else:
+        no_co_image1 = NoCoImage.query.filter(NoCoImage.location_nature == location_nature)
+
+    if defect_type == '所有类型':
+        no_co_image2 = no_co_image1
+    else:
+        no_co_image2 = no_co_image1.filter(NoCoImage.defect_type == defect_type)
+
+    if device_type == '所有类型':
+        no_co_image3 = no_co_image2
+    else:
+        no_co_image3 = no_co_image2.filter(NoCoImage.device_type == device_type)
+
+    if power_company_province == '':
+        no_co_image4 = no_co_image3
+    else:
+        no_co_image4 = no_co_image3.filter(NoCoImage.power_company_province == power_company_province)
+
+    if power_company_cityorcounty == '':
+        no_co_image5 = no_co_image4
+    else:
+        no_co_image5 = no_co_image4.filter(NoCoImage.power_company_cityorcounty == power_company_cityorcounty)
+
+    if suborlineorzone_name == '':
+        no_co_image6 = no_co_image5
+    else:
+        no_co_image6 = no_co_image5.filter(NoCoImage.suborlineorzone_name == suborlineorzone_name)
+
+    images = no_co_image6.filter(NoCoImage.detection_date.between(start_date, end_date)).all()
+
+    images_info = []
+
+    for image in images:
+        t = {}
+        t['ID'] = image.id
+        t['安装地点'] = image.location_detail
+        images_info.append(t)
+
+    return jsonify(code=200, data=images_info), 200
+
+
+@query_image.route('/export_no_co_image_matrix', methods=['GET', 'POST'])
+def export_no_co_image_matrix():
+    form = IDForm()
+    id = form.ID.data
+
+    image = NoCoImage.query.filter_by(id=id).first()
+    matrix_temp_path = image.matrix_path
+    matrix_temp_name = matrix_temp_path.split('/')[-1]
+    return send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
+                               as_attachment=True), 200
