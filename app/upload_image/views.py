@@ -246,6 +246,10 @@ def upload_co_image():
 
 @upload_image.route('/multipleNoCoImages', methods=['GET', 'POST'])
 def upload_multiple_no_co_images():
+    """
+    多图上传
+    :return: 上传是否成功
+    """
     for filename in request.files.getlist('image'):
         no_co_images.save(filename)
 
