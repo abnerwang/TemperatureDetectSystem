@@ -16,11 +16,11 @@ class Config:
     SYS_MAIL_SENDER = 'Administrator <ahu_confirm@163.com>'
 
     UPLOADED_NOCOIMAGES_DEST = '/home/abnerwang/no_co_images'
-    UPLOADED_COIMAGES_DEST = '/home/abnerwang/co_images_diagnose_images'
-    UPLOADED_ORIGINALIMAGES_DEST = '/home/abnerwang/co_images_original_images'
-    UPLOADED_CLEANIMAGES_DEST = '/home/abnerwang/co_images_clean_images'
-    UPLOADED_CCDIMAGES_DEST = '/home/abnerwang/co_images_ccd_images'
-    UPLOADED_MATRIXTEMP_DEST = '/home/abnerwang/co_images_matrix_temp'
+    UPLOADED_COIMAGES_DEST = '/home/abnerwang/diagnose_images'
+    UPLOADED_ORIGINALIMAGES_DEST = '/home/abnerwang/original_images'
+    UPLOADED_CLEANIMAGES_DEST = '/home/abnerwang/clean_images'
+    UPLOADED_CCDIMAGES_DEST = '/home/abnerwang/ccd_images'
+    UPLOADED_MATRIXTEMP_DEST = '/home/abnerwang/matrix_temp'
 
     # UPLOADED_NOCOIMAGES_DEST = '/Users/abnerwang/Documents/no_co_images'
     # UPLOADED_COIMAGES_DEST = '/Users/abnerwang/Documents/co_images_diagnose_images'
@@ -37,7 +37,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-                              'mysql://root:Wxp@0910@localhost/temp_detect_dev'
+                              'mysql://root:wxp12345@localhost/temp_detect_dev'
 
 
 class TestingConfig(Config):

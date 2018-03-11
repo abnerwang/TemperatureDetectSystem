@@ -368,7 +368,6 @@ def upload_no_co_to_co_image():
     detection_time = image.detection_time
 
     shutil.move(original_image_path, current_app.config['UPLOADED_ORIGINALIMAGES_DEST'])
-    os.remove(original_image_path)
 
     if form.validate_on_submit():
         diagnosed_image_name = co_images.save(form.co_image.data)

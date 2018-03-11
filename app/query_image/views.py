@@ -232,7 +232,6 @@ def query_no_co_image_info():
     power_company_province = form.power_company_province.data
     power_company_cityorcounty = form.power_company_cityorcounty.data
     suborlineorzone_name = form.suborlineorzone_name.data
-    defect_type = form.defect_type.data
     device_type = form.device_type.data
     start_date = form.start_date.data
     end_date = form.end_date.data
@@ -242,32 +241,27 @@ def query_no_co_image_info():
     else:
         no_co_image1 = NoCoImage.query.filter(NoCoImage.location_nature == location_nature)
 
-    if defect_type == '所有类型':
+    if device_type == '所有类型':
         no_co_image2 = no_co_image1
     else:
-        no_co_image2 = no_co_image1.filter(NoCoImage.defect_type == defect_type)
-
-    if device_type == '所有类型':
-        no_co_image3 = no_co_image2
-    else:
-        no_co_image3 = no_co_image2.filter(NoCoImage.device_type == device_type)
+        no_co_image2 = no_co_image1.filter(NoCoImage.device_type == device_type)
 
     if power_company_province == '':
-        no_co_image4 = no_co_image3
+        no_co_image3 = no_co_image2
     else:
-        no_co_image4 = no_co_image3.filter(NoCoImage.power_company_province == power_company_province)
+        no_co_image3 = no_co_image2.filter(NoCoImage.power_company_province == power_company_province)
 
     if power_company_cityorcounty == '':
-        no_co_image5 = no_co_image4
+        no_co_image4 = no_co_image3
     else:
-        no_co_image5 = no_co_image4.filter(NoCoImage.power_company_cityorcounty == power_company_cityorcounty)
+        no_co_image4 = no_co_image3.filter(NoCoImage.power_company_cityorcounty == power_company_cityorcounty)
 
     if suborlineorzone_name == '':
-        no_co_image6 = no_co_image5
+        no_co_image5 = no_co_image4
     else:
-        no_co_image6 = no_co_image5.filter(NoCoImage.suborlineorzone_name == suborlineorzone_name)
+        no_co_image5 = no_co_image4.filter(NoCoImage.suborlineorzone_name == suborlineorzone_name)
 
-    images = no_co_image6.filter(NoCoImage.detection_date.between(start_date, end_date)).all()
+    images = no_co_image5.filter(NoCoImage.detection_date.between(start_date, end_date)).all()
 
     images_info = []
 
