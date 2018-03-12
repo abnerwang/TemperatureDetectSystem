@@ -1,4 +1,4 @@
-from flask import jsonify, send_from_directory, current_app
+from flask import jsonify, send_from_directory, current_app, make_response
 
 from . import query_image
 from .forms import QueryForm, IDForm
@@ -182,8 +182,10 @@ def export_co_image_via_id():
     image = CoImage.query.filter_by(id=id).first()
     image_name = image.image_name
 
-    return send_from_directory(current_app.config['UPLOADED_COIMAGES_DEST'], image_name,
-                               as_attachment=True), 200
+    response = make_response(send_from_directory(current_app.config['UPLOADED_COIMAGES_DEST'], image_name,
+                                                 as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(image_name.encode().decode('latin-1'))
+    return response
 
 
 @query_image.route('/export_ccd_image_via_id', methods=['GET', 'POST'])
@@ -195,8 +197,12 @@ def export_ccd_image_via_id():
     ccd_image_path = image.ccd_image_path
     if ccd_image_path != '':
         ccd_image_name = ccd_image_path.split('/')[-1]
-        return send_from_directory(current_app.config['UPLOADED_CCDIMAGES_DEST'], ccd_image_name,
-                                   as_attachment=True), 200
+        response = make_response(send_from_directory(current_app.config['UPLOADED_CCDIMAGES_DEST'], ccd_image_name,
+                                                     as_attachment=True))
+        response.headers["Content-Disposition"] = "attachment; filename={}".format(
+            ccd_image_name.encode().decode('latin-1'))
+        return response
+
     else:
         return jsonify(code=200, message='您尚未上传此图像相关的可见光图像！'), 200
 
@@ -209,8 +215,11 @@ def export_co_image_matrix():
     image = CoImage.query.filter_by(id=id).first()
     matrix_temp_path = image.matrix_temp_path
     matrix_temp_name = matrix_temp_path.split('/')[-1]
-    return send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
-                               as_attachment=True), 200
+    response = make_response(send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
+                                                 as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(
+        matrix_temp_name.encode().decode('latin-1'))
+    return response
 
 
 @query_image.route('/export_no_co_image_via_id', methods=['GET', 'POST'])
@@ -221,8 +230,11 @@ def export_no_co_image_via_id():
     image = NoCoImage.query.filter_by(id=id).first()
     image_name = image.image_name
 
-    return send_from_directory(current_app.config['UPLOADED_NOCOIMAGES_DEST'], image_name,
-                               as_attachment=True), 200
+    response = make_response(send_from_directory(current_app.config['UPLOADED_NOCOIMAGES_DEST'], image_name,
+                                                 as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(
+        image_name.encode().decode('latin-1'))
+    return response
 
 
 @query_image.route('/no_co_image_info', methods=['GET', 'POST'])
@@ -282,8 +294,11 @@ def export_no_co_image_matrix():
     image = NoCoImage.query.filter_by(id=id).first()
     matrix_temp_path = image.matrix_path
     matrix_temp_name = matrix_temp_path.split('/')[-1]
-    return send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
-                               as_attachment=True), 200
+    response = make_response(send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
+                                                 as_attachment=True))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(
+        matrix_temp_name.encode().decode('latin-1'))
+    return response
 
 
 @query_image.route('/no_co_image_info_via_id', methods=['GET', 'POST'])
