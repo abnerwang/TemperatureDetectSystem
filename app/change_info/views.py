@@ -103,7 +103,7 @@ def change_co_image_info():
     original_image_name_old = os.path.split(image.original_image_path)[1]
     ext = os.path.splitext(original_image_name_old)
     original_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                              form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+                              form.suborlineorzone_name + '+' + form.location_detail + '+' + str(datetime.utcnow())
     original_image_name = original_image_name_new + '.' + ext
     image.original_image_path = original_image_path + '/' + original_image_name
     os.rename(os.path.join(original_image_path, original_image_name_old), os.path.join(original_image_path,
@@ -113,7 +113,7 @@ def change_co_image_info():
     clean_image_name_old = os.path.split(image.clean_image_path)[1]
     ext = os.path.splitext(clean_image_name_old)
     clean_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+                           form.suborlineorzone_name + '+' + form.location_detail + '+' + str(datetime.utcnow())
     clean_image_name = clean_image_name_new + '.' + ext
     image.clean_image_path = clean_image_path + '/' + clean_image_name
     os.rename(os.path.join(clean_image_path, clean_image_name_old), os.path.join(clean_image_path,
@@ -124,7 +124,7 @@ def change_co_image_info():
         ccd_image_name_old = os.path.split(image.ccd_image_path)[1]
         ext = os.path.splitext(ccd_image_name_old)
         ccd_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                             form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+                             form.suborlineorzone_name + '+' + form.location_detail + '+' + str(datetime.utcnow())
         ccd_image_name = ccd_image_name_new + '.' + ext
         image.ccd_image_path = ccd_image_path + '/' + ccd_image_name
         os.rename(os.path.join(ccd_image_path, ccd_image_name_old), os.path.join(ccd_image_path,
@@ -134,7 +134,7 @@ def change_co_image_info():
     matrix_temp_name_old = os.path.split(image.matrix_temp_path)[1]
     ext = os.path.splitext(matrix_temp_name_old)
     matrix_temp_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+                           form.suborlineorzone_name + '+' + form.location_detail + '+' + str(datetime.utcnow())
     matrix_temp_name = matrix_temp_name_new + '.' + ext
     image.matrix_temp_path = matrix_temp_path + '/' + matrix_temp_name
     os.rename(os.path.join(matrix_temp_path, matrix_temp_name_old), os.path.join(matrix_temp_path,
@@ -144,7 +144,7 @@ def change_co_image_info():
     diagnose_image_name_old = os.path.split(image.diagnose_image_path)[1]
     ext = os.path.splitext(diagnose_image_name_old)
     diagnose_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                              form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+                              form.suborlineorzone_name + '+' + form.location_detail + '+' + str(datetime.utcnow())
     diagnose_image_name = diagnose_image_name_new + '.' + ext
     image.diagnose_image_path = diagnose_image_path + '/' + diagnose_image_name
     os.rename(os.path.join(diagnose_image_path, diagnose_image_name_old), os.path.join(diagnose_image_path,
