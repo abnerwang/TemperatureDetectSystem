@@ -25,10 +25,8 @@ class UploadNoCoImageForm(FlaskForm):
     run_date = DateField('投运日期')
     detection_date = DateField('检测日期')
     detection_time = TimeField('详细时间')
-    report_date = DateField('报告日期')
     instrument_model = StringField('仪器型号')
     instrument_num = StringField('仪器编号')
-    reporter = StringField('报告人')
     steward = StringField('负责人')
     inspector = StringField('检测人')
     reviewer = StringField('校阅人')
@@ -212,6 +210,7 @@ class UploadNoCoToCoImageForm(FlaskForm):
 
     ID = IntegerField('未诊断图像的ID')
     co_image = FileField('诊断后带框的图', validators=[FileAllowed(co_images, '只能上传图片！'), FileRequired('尚未选取图片！')])
+    clean_image = FileField('净图', validators=[FileAllowed(clean_images, '只能上传图片！')])
     power_company_province = StringField('省级供电公司')
     power_company_cityorcounty = StringField('市县级供电公司')
     suborlineorzone_name = StringField('变电站（线路、台区）名')

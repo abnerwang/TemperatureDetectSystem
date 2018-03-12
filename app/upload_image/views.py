@@ -1,6 +1,7 @@
+from datetime import datetime
+
 import os
 import shutil
-
 from flask import jsonify, request, current_app
 
 from . import upload_image
@@ -43,10 +44,8 @@ def upload_no_co_image():
         run_date = form.run_date.data
         detection_date = form.detection_date.data
         detection_time = form.detection_time.data
-        report_date = form.report_date.data
         instrument_model = form.instrument_model.data
         instrument_num = form.instrument_num.data
-        reporter = form.reporter.data
         steward = form.steward.data
         inspector = form.inspector.data
         reviewer = form.reviewer.data
@@ -279,6 +278,48 @@ def upload_re_co_image():
     image.power_company_cityorcountry = form.power_company_cityorcounty.data
     image.suborlineorzone_name = form.suborlineorzone_name.data
     image.location_detail = form.location_detail.data
+
+    original_image_path = os.path.split(image.original_image_path)[0]
+    original_image_name_old = os.path.split(image.original_image_path)[1]
+    ext = os.path.splitext(original_image_name_old)
+    original_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
+                              form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+    original_image_name = original_image_name_new + '.' + ext
+    image.original_image_path = original_image_path + '/' + original_image_name
+    os.rename(os.path.join(original_image_path, original_image_name_old), os.path.join(original_image_path,
+                                                                                       original_image_name))
+
+    clean_image_path = os.path.split(image.clean_image_path)[0]
+    clean_image_name_old = os.path.split(image.clean_image_path)[1]
+    ext = os.path.splitext(clean_image_name_old)
+    clean_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
+                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+    clean_image_name = clean_image_name_new + '.' + ext
+    image.clean_image_path = clean_image_path + '/' + clean_image_name
+    os.rename(os.path.join(clean_image_path, clean_image_name_old), os.path.join(clean_image_path,
+                                                                                 clean_image_name))
+
+    if image.ccd_image_path != '':
+        ccd_image_path = os.path.split(image.ccd_image_path)[0]
+        ccd_image_name_old = os.path.split(image.ccd_image_path)[1]
+        ext = os.path.splitext(ccd_image_name_old)
+        ccd_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
+                             form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+        ccd_image_name = ccd_image_name_new + '.' + ext
+        image.ccd_image_path = ccd_image_path + '/' + ccd_image_name
+        os.rename(os.path.join(ccd_image_path, ccd_image_name_old), os.path.join(ccd_image_path,
+                                                                                 ccd_image_name))
+
+    matrix_temp_path = os.path.split(image.matrix_temp_path)[0]
+    matrix_temp_name_old = os.path.split(image.matrix_temp_path)[1]
+    ext = os.path.splitext(matrix_temp_name_old)
+    matrix_temp_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
+                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow()
+    matrix_temp_name = matrix_temp_name_new + '.' + ext
+    image.matrix_temp_path = matrix_temp_path + '/' + matrix_temp_name
+    os.rename(os.path.join(matrix_temp_path, matrix_temp_name_old), os.path.join(matrix_temp_path,
+                                                                                 matrix_temp_name))
+
     image.production_date = form.production_date.data
     image.run_date = form.run_date.data
     image.detection_date = form.detection_date.data
@@ -371,6 +412,7 @@ def upload_no_co_to_co_image():
 
     if form.validate_on_submit():
         diagnosed_image_name = co_images.save(form.co_image.data)
+        clean_image_name = clean_images.save(form.clean_image.data)
         image_name = diagnosed_image_name
         power_company_province = form.power_company_province.data
         power_company_cityorcountry = form.power_company_cityorcounty.data
@@ -378,6 +420,7 @@ def upload_no_co_to_co_image():
         location_detail = form.location_detail.data
         original_image_path = current_app.config['UPLOADED_ORIGINALIMAGES_DEST'] + '/' + original_image_name
         diagnose_image_path = co_images.path(diagnosed_image_name)
+        clean_image_path = clean_images.path(clean_image_name)
         production_date = form.production_date.data
         run_date = form.run_date.data
         detection_date = form.detection_date.data
@@ -454,7 +497,8 @@ def upload_no_co_to_co_image():
                            suborlineorzone_name=suborlineorzone_name,
                            location_detail=location_detail, location_nature=location_nature,
                            original_image_path=original_image_path,
-                           diagnose_image_path=diagnose_image_path, ccd_image_path=ccd_image_path,
+                           diagnose_image_path=diagnose_image_path, clean_image_path=clean_image_path,
+                           ccd_image_path=ccd_image_path,
                            matrix_temp_path=matrix_temp_path,
                            production_date=production_date, run_date=run_date, detection_date=detection_date,
                            detection_time=detection_time, report_date=report_date,
