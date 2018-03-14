@@ -101,22 +101,21 @@ def change_co_image_info():
 
     original_image_path = os.path.split(image.original_image_path)[0]
     original_image_name_old = os.path.split(image.original_image_path)[1]
-    ext = os.path.splitext(original_image_name_old)
-    original_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                              form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow().strftime(
+    ext = os.path.splitext(original_image_name_old)[1]
+    original_image_name_new = form.power_company_province.data + '+' + form.power_company_cityorcounty.data + '+' + form.suborlineorzone_name.data + '+' + form.location_detail.data + '+' + datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S")
-    original_image_name = original_image_name_new + '.' + ext
+    original_image_name = original_image_name_new + ext
     image.original_image_path = original_image_path + '/' + original_image_name
     os.rename(os.path.join(original_image_path, original_image_name_old), os.path.join(original_image_path,
                                                                                        original_image_name))
 
     clean_image_path = os.path.split(image.clean_image_path)[0]
     clean_image_name_old = os.path.split(image.clean_image_path)[1]
-    ext = os.path.splitext(clean_image_name_old)
-    clean_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow().strftime(
+    ext = os.path.splitext(clean_image_name_old)[1]
+    clean_image_name_new = form.power_company_province.data + '+' + form.power_company_cityorcounty.data + '+' + \
+                           form.suborlineorzone_name.data + '+' + form.location_detail.data + '+' + datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S")
-    clean_image_name = clean_image_name_new + '.' + ext
+    clean_image_name = clean_image_name_new + ext
     image.clean_image_path = clean_image_path + '/' + clean_image_name
     os.rename(os.path.join(clean_image_path, clean_image_name_old), os.path.join(clean_image_path,
                                                                                  clean_image_name))
@@ -124,33 +123,33 @@ def change_co_image_info():
     if image.ccd_image_path != '':
         ccd_image_path = os.path.split(image.ccd_image_path)[0]
         ccd_image_name_old = os.path.split(image.ccd_image_path)[1]
-        ext = os.path.splitext(ccd_image_name_old)
-        ccd_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                             form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow().strftime(
+        ext = os.path.splitext(ccd_image_name_old)[1]
+        ccd_image_name_new = form.power_company_province.data + '+' + form.power_company_cityorcounty.data + '+' + \
+                             form.suborlineorzone_name.data + '+' + form.location_detail.data + '+' + datetime.now().strftime(
             "%Y-%m-%d %H:%M:%S")
-        ccd_image_name = ccd_image_name_new + '.' + ext
+        ccd_image_name = ccd_image_name_new + ext
         image.ccd_image_path = ccd_image_path + '/' + ccd_image_name
         os.rename(os.path.join(ccd_image_path, ccd_image_name_old), os.path.join(ccd_image_path,
                                                                                  ccd_image_name))
 
     matrix_temp_path = os.path.split(image.matrix_temp_path)[0]
     matrix_temp_name_old = os.path.split(image.matrix_temp_path)[1]
-    ext = os.path.splitext(matrix_temp_name_old)
-    matrix_temp_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                           form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow().strftime(
+    ext = os.path.splitext(matrix_temp_name_old)[1]
+    matrix_temp_name_new = form.power_company_province.data + '+' + form.power_company_cityorcounty.data + '+' + \
+                           form.suborlineorzone_name.data + '+' + form.location_detail.data + '+' + datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S")
-    matrix_temp_name = matrix_temp_name_new + '.' + ext
+    matrix_temp_name = matrix_temp_name_new + ext
     image.matrix_temp_path = matrix_temp_path + '/' + matrix_temp_name
     os.rename(os.path.join(matrix_temp_path, matrix_temp_name_old), os.path.join(matrix_temp_path,
                                                                                  matrix_temp_name))
 
     diagnose_image_path = os.path.split(image.diagnose_image_path)[0]
     diagnose_image_name_old = os.path.split(image.diagnose_image_path)[1]
-    ext = os.path.splitext(diagnose_image_name_old)
-    diagnose_image_name_new = form.power_company_province + '+' + form.power_company_cityorcounty + '+' + \
-                              form.suborlineorzone_name + '+' + form.location_detail + '+' + datetime.utcnow().strftime(
+    ext = os.path.splitext(diagnose_image_name_old)[1]
+    diagnose_image_name_new = form.power_company_province.data + '+' + form.power_company_cityorcounty.data + '+' + \
+                              form.suborlineorzone_name.data + '+' + form.location_detail.data + '+' + datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S")
-    diagnose_image_name = diagnose_image_name_new + '.' + ext
+    diagnose_image_name = diagnose_image_name_new + ext
     image.diagnose_image_path = diagnose_image_path + '/' + diagnose_image_name
     os.rename(os.path.join(diagnose_image_path, diagnose_image_name_old), os.path.join(diagnose_image_path,
                                                                                        diagnose_image_name))

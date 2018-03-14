@@ -319,10 +319,8 @@ def no_co_image_info_via_id():
     run_date = image.run_date
     detection_date = image.detection_date.strftime('%Y-%m-%d')
     detection_time = image.detection_time.strftime('%H:%M:%S')
-    report_date = image.report_date
     instrument_model = image.instrument_model
     instrument_num = image.instrument_num
-    reporter = image.reporter
     principal = image.steward
     inspector = image.inspector
     reviewer = image.reviewer
@@ -351,8 +349,7 @@ def no_co_image_info_via_id():
                    location_detail=location_detail, location_nature=location_nature,
                    production_date=production_date,
                    run_date=run_date, detection_date=detection_date, detection_time=detection_time,
-                   report_date=report_date,
-                   instrument_model=instrument_model, instrument_num=instrument_num, reporter=reporter,
+                   instrument_model=instrument_model, instrument_num=instrument_num,
                    principal=principal,
                    inspector=inspector, reviewer=reviewer, auditor=auditor, rated_current=rated_current,
                    load_current=load_current,

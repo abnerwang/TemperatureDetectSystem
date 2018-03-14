@@ -1,11 +1,9 @@
 尊敬的 <b>{{ user.username }}</b> 用户：<br/>
 <br/>
-欢迎使用安徽大学红外热像分析系统！为了确认您的账户，请务必在一小时内点击以下链接：<br/>
+欢迎使用安徽大学红外热像分析系统！请务必 1 小时内点击以下链接确认你的账户：<br/>
 <br/>
 <a href={{ url_for('auth.confirm', token=token, _external=True) }}>{{ url_for('auth.confirm', token=token, _external=True) }}</a>
 <br/>
-<br/>
-请尽快确认，过一小时后此链接失效，再次确认需要您到客户端用户资料页重新发送确认邮件。<br/>
 <br/>
 <br/>
 注意：请勿直接回复此邮件！
