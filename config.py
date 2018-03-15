@@ -17,19 +17,19 @@ class Config:
     SYS_MAIL_SUBJECT_PREFIX = '[红外热像分析系统]'
     SYS_MAIL_SENDER = 'Administrator <ahu_confirm@163.com>'
 
-    # NOCOIMAGES_DEST_PRE = '/home/abnerwang/no_co_images'
-    # COIMAGES_DEST_PRE = '/home/abnerwang/diagnose_images'
-    # ORIGINALIMAGES_DEST_PRE = '/home/abnerwang/original_images'
-    # CLEANIMAGES_DEST_PRE = '/home/abnerwang/clean_images'
-    # CCDIMAGES_DEST_PRE = '/home/abnerwang/ccd_images'
-    # MATRIXTEMP_DEST_PRE = '/home/abnerwang/matrix_temp'
+    NOCOIMAGES_DEST_PRE = '/home/abnerwang/no_co_images'
+    COIMAGES_DEST_PRE = '/home/abnerwang/diagnose_images'
+    ORIGINALIMAGES_DEST_PRE = '/home/abnerwang/original_images'
+    CLEANIMAGES_DEST_PRE = '/home/abnerwang/clean_images'
+    CCDIMAGES_DEST_PRE = '/home/abnerwang/ccd_images'
+    MATRIXTEMP_DEST_PRE = '/home/abnerwang/matrix_temp'
 
-    NOCOIMAGES_DEST_PRE = '/Users/abnerwang/Documents/no_co_images'
-    COIMAGES_DEST_PRE = '/Users/abnerwang/Documents/diagnose_images'
-    ORIGINALIMAGES_DEST_PRE = '/Users/abnerwang/Documents/original_images'
-    CLEANIMAGES_DEST_PRE = '/Users/abnerwang/Documents/clean_images'
-    CCDIMAGES_DEST_PRE = '/Users/abnerwang/Documents/ccd_images'
-    MATRIXTEMP_DEST_PRE = '/Users/abnerwang/Documents/matrix_temp'
+    # NOCOIMAGES_DEST_PRE = '/Users/abnerwang/Documents/no_co_images'
+    # COIMAGES_DEST_PRE = '/Users/abnerwang/Documents/diagnose_images'
+    # ORIGINALIMAGES_DEST_PRE = '/Users/abnerwang/Documents/original_images'
+    # CLEANIMAGES_DEST_PRE = '/Users/abnerwang/Documents/clean_images'
+    # CCDIMAGES_DEST_PRE = '/Users/abnerwang/Documents/ccd_images'
+    # MATRIXTEMP_DEST_PRE = '/Users/abnerwang/Documents/matrix_temp'
 
     year = time.strftime('%Y', time.localtime(time.time()))
     month = time.strftime('%m', time.localtime(time.time()))
@@ -76,7 +76,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-                              'mysql://root:wxp12345@localhost/temp_detect_dev'
+                              'mysql://root:Wxp@0910@localhost/temp_detect_dev'
 
 
 class TestingConfig(Config):

@@ -77,8 +77,8 @@ def report_via_id():
     suborlineorzone_name = image.suborlineorzone_name
     location_detail = image.location_detail
     location_nature = image.location_nature
-    production_date = image.production_date
-    run_date = image.run_date
+    production_date = image.production_date.strftime('%Y-%m-%d')
+    run_date = image.run_date.strftime('%Y-%m-%d')
     # detection_date = json.dumps(image.detection_date, cls=CJsonEncoder)
     # detection_time = json.dumps(image.detection_time, cls=CJsonEncoder)
     detection_date = image.detection_date.strftime('%Y-%m-%d')
@@ -315,8 +315,8 @@ def no_co_image_info_via_id():
     suborlineorzone_name = image.suborlineorzone_name
     location_detail = image.location_detail
     location_nature = image.location_nature
-    production_date = image.production_date
-    run_date = image.run_date
+    production_date = image.production_date.strftime('%Y-%m-%d')
+    run_date = image.run_date.strftime('%Y-%m-%d')
     detection_date = image.detection_date.strftime('%Y-%m-%d')
     detection_time = image.detection_time.strftime('%H:%M:%S')
     instrument_model = image.instrument_model
