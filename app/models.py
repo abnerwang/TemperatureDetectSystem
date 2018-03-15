@@ -233,9 +233,52 @@ class CoImage(db.Model):
     rtd = db.Column(db.Text)
     td = db.Column(db.Text)
 
-# class BigRectInfo(db.Model):
-#     co_image_table_ID = db.Column(db.Integer)
-#     start_point_x = db.Column(db.Text)
-#     start_point_y = db.Column(db.Text)
-#     end_point_x = db.Column(db.Text)
-#     end_point_y = db.Column(db.Text)
+
+class TranProCompany(db.Model):
+    __tablename__ = 'tran_pro_companies'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    company_name = db.Column(db.Text)
+
+
+class TranCityCouCompany(db.Model):
+    __tablename__ = 'tran_city_county_companies'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    company_name = db.Column(db.Text)
+    father_company = db.Column(db.Integer)
+
+
+class Transformer(db.Model):
+    __tablename__ = 'transformers'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    trans_name = db.Column(db.Text)
+    father_company = db.Column(db.Integer)
+
+
+class LineProCompany(db.Model):
+    __tablename__ = 'line_pro_companies'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    company_name = db.Column(db.Text)
+
+
+class LineCityCouCompany(db.Model):
+    __tablename__ = 'line_city_county_companies'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    company_name = db.Column(db.Text)
+    father_company = db.Column(db.Integer)
+
+
+class Line(db.Model):
+    __tablename__ = 'sublines'
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    line_name = db.Column(db.Text)
+    father_company = db.Column(db.Integer)
+
+
+class BigRectInformation(db.Model):
+    __tablename__ = 'big_rect_information'
+    ID = db.Column(db.Integer, autoincrement=Transformer, primary_key=True)
+    co_image_table_ID = db.Column(db.Integer)
+    start_point_x = db.Column(db.Float)
+    start_point_y = db.Column(db.Float)
+    end_point_x = db.Column(db.Float)
+    end_point_y = db.Column(db.Float)

@@ -83,7 +83,7 @@ def report_via_id():
     # detection_time = json.dumps(image.detection_time, cls=CJsonEncoder)
     detection_date = image.detection_date.strftime('%Y-%m-%d')
     detection_time = image.detection_time.strftime('%H:%M:%S')
-    report_date = image.report_date
+    report_date = image.report_date.strftime('%Y-%m-%d')
     instrument_model = image.instrument_model
     instrument_num = image.instrument_num
     reporter = image.reporter

@@ -54,7 +54,15 @@ def create_app(config_name):
     app.register_blueprint(query_image_blueprint, url_prefix='/query')
 
     # 注册信息修改蓝本
-    from .change_info import change_info as change_info_blueprint
-    app.register_blueprint(change_info_blueprint, url_prefix='/change_info')
+    from .change_image_info import change_info as change_info_blueprint
+    app.register_blueprint(change_info_blueprint, url_prefix='/change_image_info')
+
+    # 注册位置管理蓝本
+    from .location_manage import location_manage as location_manage_blueprint
+    app.register_blueprint(location_manage_blueprint, url_prefix='/location_manage')
+
+    # 注册矩形框信息管理蓝本
+    from .rect_info import rect_info as rect_info_blueprint
+    app.register_blueprint(rect_info_blueprint, url_prefix='/rect_info')
 
     return app
