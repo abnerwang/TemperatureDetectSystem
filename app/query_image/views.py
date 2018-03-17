@@ -40,7 +40,7 @@ def query_co_image_info():
     if power_company_cityorcounty == '':
         co_image5 = co_image4
     else:
-        co_image5 = co_image4.filter(CoImage.power_company_cityorcounty == power_company_cityorcounty)
+        co_image5 = co_image4.filter(CoImage.power_company_cityorcountry == power_company_cityorcounty)
 
     if suborlineorzone_name == '':
         co_image6 = co_image5
@@ -180,7 +180,8 @@ def export_co_image_via_id():
     id = form.ID.data
 
     image = CoImage.query.filter_by(id=id).first()
-    image_name = image.image_name
+    diagnose_image_path = image.diagnose_image_path
+    image_name = diagnose_image_path.split('/')[-1]
 
     response = make_response(send_from_directory(current_app.config['UPLOADED_COIMAGES_DEST'], image_name,
                                                  as_attachment=True))
@@ -266,7 +267,7 @@ def query_no_co_image_info():
     if power_company_cityorcounty == '':
         no_co_image4 = no_co_image3
     else:
-        no_co_image4 = no_co_image3.filter(NoCoImage.power_company_cityorcounty == power_company_cityorcounty)
+        no_co_image4 = no_co_image3.filter(NoCoImage.power_company_cityorcountry == power_company_cityorcounty)
 
     if suborlineorzone_name == '':
         no_co_image5 = no_co_image4

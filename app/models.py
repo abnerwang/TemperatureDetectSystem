@@ -276,7 +276,7 @@ class Line(db.Model):
 
 class BigRectInformation(db.Model):
     __tablename__ = 'big_rect_information'
-    ID = db.Column(db.Integer, autoincrement=Transformer, primary_key=True)
+    ID = db.Column(db.Integer, autoincrement=True, primary_key=True)
     co_image_table_ID = db.Column(db.Integer)
     start_point_x = db.Column(db.Float)
     start_point_y = db.Column(db.Float)

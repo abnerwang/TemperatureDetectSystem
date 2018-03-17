@@ -4,7 +4,7 @@ import os
 
 
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+    SECRET_KEY = 'Wxp%^&*#sdhaklfhkjdsai3s234@$$+;'
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -12,8 +12,8 @@ class Config:
     MAIL_SERVER = 'smtp.163.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'ahu_confirm@163.com'
+    MAIL_PASSWORD = 'wxp12345'
     SYS_MAIL_SUBJECT_PREFIX = '[红外热像分析系统]'
     SYS_MAIL_SENDER = 'Administrator <ahu_confirm@163.com>'
 
@@ -76,7 +76,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URI') or \
-                              'mysql://root:Wxp@0910@localhost/temp_detect_dev'
+                              'mysql://abnerwang:Wxp#1991&0910@localhost/temp_detect_dev'
 
 
 class TestingConfig(Config):

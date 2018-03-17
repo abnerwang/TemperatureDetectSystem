@@ -405,16 +405,12 @@ def upload_no_co_to_co_image():
     id = form.ID.data
     image = NoCoImage.query.filter_by(id=id).first()
     original_image_name = image.image_name
-    original_image_path = image.original_image_path
+    no_co_original_image_path = image.original_image_path
     ccd_image_path = image.ccd_image_path
     matrix_temp_path = image.matrix_path
     image_num = image.image_num
     location_nature = image.location_nature
     detection_time = image.detection_time
-
-    shutil.move(original_image_path, current_app.config['UPLOADED_ORIGINALIMAGES_DEST'])
-    db.session.delete(image)
-    db.session.commit()
 
     if form.validate_on_submit():
         diagnosed_image_name = co_images.save(form.co_image.data)
@@ -489,13 +485,18 @@ def upload_no_co_to_co_image():
         rtd = form.rtd.data
         td = form.td.data
 
-        image = CoImage.query.filter_by(detection_date=detection_date, power_company_province=power_company_province,
-                                        power_company_cityorcountry=power_company_cityorcountry,
-                                        suborlineorzone_name=suborlineorzone_name,
-                                        location_detail=location_detail).first()
+        test_image = CoImage.query.filter_by(detection_date=detection_date,
+                                             power_company_province=power_company_province,
+                                             power_company_cityorcountry=power_company_cityorcountry,
+                                             suborlineorzone_name=suborlineorzone_name,
+                                             location_detail=location_detail).first()
 
-        if image is not None:
+        if test_image is not None:
             return jsonify(code=200, message='此条信息已存在，请到重新诊断中进行修改！'), 200
+        else:
+            shutil.move(no_co_original_image_path, current_app.config['UPLOADED_ORIGINALIMAGES_DEST'])
+            db.session.delete(image)
+            db.session.commit()
 
         co_image = CoImage(image_name=image_name, image_num=image_num,
                            power_company_province=power_company_province,

@@ -25,7 +25,7 @@ def big_upload():
                                     CoImage.suborlineorzone_name == suborlineorzone_name,
                                     CoImage.location_detail == location_detail,
                                     CoImage.location_nature == location_nature,
-                                    CoImage.detection_date == detection_date)
+                                    CoImage.detection_date == detection_date).first()
 
     co_image_table_ID = co_image.id
 
