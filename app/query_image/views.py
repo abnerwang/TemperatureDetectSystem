@@ -185,7 +185,8 @@ def export_co_image_via_id():
 
     response = make_response(send_from_directory(current_app.config['UPLOADED_COIMAGES_DEST'], image_name,
                                                  as_attachment=True))
-    response.headers["Content-Disposition"] = "attachment; filename={}".format(image_name.encode().decode('latin-1'))
+    response.headers["Content-Disposition"] = "attachment; filename={}".format(image_name.encode('utf-8'),
+                                                                               as_attachment=True, conditional=True)
     return response
 
 
@@ -201,7 +202,7 @@ def export_ccd_image_via_id():
         response = make_response(send_from_directory(current_app.config['UPLOADED_CCDIMAGES_DEST'], ccd_image_name,
                                                      as_attachment=True))
         response.headers["Content-Disposition"] = "attachment; filename={}".format(
-            ccd_image_name.encode().decode('latin-1'))
+            ccd_image_name.encode('utf-8'), as_attachment=True, conditional=True)
         return response
 
     else:
@@ -219,7 +220,7 @@ def export_co_image_matrix():
     response = make_response(send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
                                                  as_attachment=True))
     response.headers["Content-Disposition"] = "attachment; filename={}".format(
-        matrix_temp_name.encode().decode('latin-1'))
+        matrix_temp_name.encode('utf-8'), as_attachment=True, conditional=True)
     return response
 
 
@@ -234,7 +235,7 @@ def export_no_co_image_via_id():
     response = make_response(send_from_directory(current_app.config['UPLOADED_NOCOIMAGES_DEST'], image_name,
                                                  as_attachment=True))
     response.headers["Content-Disposition"] = "attachment; filename={}".format(
-        image_name.encode().decode('latin-1'))
+        image_name.encode('utf-8'), as_attachment=True, conditional=True)
     return response
 
 
@@ -298,7 +299,7 @@ def export_no_co_image_matrix():
     response = make_response(send_from_directory(current_app.config['UPLOADED_MATRIXTEMP_DEST'], matrix_temp_name,
                                                  as_attachment=True))
     response.headers["Content-Disposition"] = "attachment; filename={}".format(
-        matrix_temp_name.encode().decode('latin-1'))
+        matrix_temp_name.encode('utf-8'), as_attachment=True, conditional=True)
     return response
 
 
