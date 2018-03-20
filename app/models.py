@@ -117,7 +117,7 @@ class User(UserMixin, db.Model):
 class NoCoImage(db.Model):
     __tablename__ = 'no_co_images'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    image_name = db.Column(db.String(64), nullable=False)
+    image_name = db.Column(db.Text, nullable=False)
     image_num = db.Column(db.String(64))
     power_company_province = db.Column(db.String(64))
     power_company_cityorcountry = db.Column(db.String(64))
@@ -158,7 +158,7 @@ class NoCoImage(db.Model):
 class CoImage(db.Model):
     __tablename__ = 'co_images'
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    image_name = db.Column(db.String(64), nullable=False)
+    image_name = db.Column(db.Text, nullable=False)
     image_num = db.Column(db.String(64))
     power_company_province = db.Column(db.String(64))
     power_company_cityorcountry = db.Column(db.String(64))

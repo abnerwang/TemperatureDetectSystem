@@ -231,6 +231,8 @@ def get_line_cityorcounty():
     form = PowerProvinceForm()
     power_company_province = form.power_company_province.data
     power_company_province = LineProCompany.query.filter_by(company_name=power_company_province).first()
+    if power_company_province is None:
+        return jsonify(code=200, message='您尚未添加该线路的省级供电公司！'), 200
     power_company_province_id = power_company_province.ID
     cities_or_counties = LineCityCouCompany.query.filter_by(father_company=power_company_province_id).all()
 
