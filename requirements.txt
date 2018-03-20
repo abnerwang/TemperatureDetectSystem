@@ -6,6 +6,7 @@ click==6.7
 cryptography==2.1.4
 decorator==4.2.1
 dominate==2.3.1
+enum34==1.1.6
 Flask==0.12.2
 Flask-Bootstrap==3.3.7.1
 Flask-Login==0.4.1
@@ -15,9 +16,11 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.2
+gunicorn==19.7.1
 idna==2.6
 infinity==1.4
 intervals==0.8.1
+ipaddress==1.0.19
 itsdangerous==0.24
 Jinja2==2.10
 Mako==1.0.7
@@ -30,7 +33,6 @@ python-editor==1.0.3
 six==1.11.0
 SQLAlchemy==1.2.1
 stevedore==1.28.0
-uWSGI==2.0.17
 validators==0.12.0
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
