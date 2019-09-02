@@ -1,6 +1,6 @@
 ### 变压器温度侦测及故障诊断系统
 
-#### 用户界面
+#### 用户界面（图像查询模块）
 
 ![](https://res.cloudinary.com/dtfjnb8ft/image/upload/v1567391204/Picture1.png)
 
