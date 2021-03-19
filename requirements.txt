@@ -22,7 +22,7 @@ infinity==1.4
 intervals==0.8.1
 ipaddress==1.0.19
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==2.11.3
 Mako==1.0.7
 MarkupSafe==1.0
 pbr==3.1.1
